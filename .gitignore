@@ -1,0 +1,7 @@
+logfile
+node_modules/
+package-lock.json
+.*.sw*
+*.log
+logfile
+.DS_Store

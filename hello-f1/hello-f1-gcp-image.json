@@ -1,0 +1,105 @@
+{
+    "description": "Create an F1 API Image",
+    "variables": {
+      "machine_type": "f1-micro",
+      "region": "australia-southeast1",
+      "zone": "australia-southeast1-a",
+      "purpose": "f1-api-v3",
+      "image_family": "ubuntu-1804-lts",
+      "consul-packer-module-version": "0.4.0",
+      "consul_version": "1.9.0",
+      "project_id": ""
+    },
+    "builders": [
+      {
+        "name": "f1-api",
+        "type": "googlecompute",
+        "project_id": "{{user `project_id`}}",
+        "machine_type": "{{user `machine_type`}}",
+        "source_image_family": "{{user `image_family`}}",
+        "image_family": "f1-ubuntu-1804",
+        "region": "{{user `region`}}",
+        "zone": "{{user `zone`}}",
+        "image_description": "F1 API on Ubuntu 18.04 LTS",
+        "image_name": "{{user `purpose`}}",
+        "disk_size": 16,
+        "disk_type": "pd-ssd",
+        "ssh_username": "ubuntu",
+        "tags": ["f1-api-v3"]
+      }
+    ],
+    
+    "provisioners": [
+      {
+        "type": "shell",
+        "inline": [
+            "sudo mkdir -p /usr/src/app"
+        ],
+        "only": [
+            "f1-api"
+        ]
+      },
+      {
+        "type": "file",
+        "source": "install-node.sh",
+        "destination": "/tmp/",
+        "only": [
+          "f1-api"
+        ]
+      },
+      {
+        "type": "file",
+        "source": "f1-svc-consul-client.json",
+        "destination": "/tmp/",
+        "only": [
+          "f1-api"
+        ]
+      },
+      {
+        "type": "file",
+        "source": "src",
+        "destination": "/tmp/",
+        "only": [
+          "f1-api"
+        ]
+      },
+      {
+        "type": "file",
+        "source": "package.json",
+        "destination": "/tmp/",
+        "only": [
+          "f1-api"
+        ]
+      },
+      {
+        "type": "shell",
+        "inline": [
+            "mkdir -p /tmp/terraform-google-consul",
+            "mkdir -p /tmp/bash-commons"
+          ]
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "sudo mkdir -p /opt/gruntwork",
+          "git clone --branch v0.0.3 https://github.com/gruntwork-io/bash-commons.git /tmp/bash-commons",
+          "sudo cp -r /tmp/bash-commons/modules/bash-commons/src /opt/gruntwork/bash-commons"
+        ]
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "git clone --branch v{{user `consul-packer-module-version`}}  https://github.com/hashicorp/terraform-google-consul.git  /tmp/terraform-google-consul",
+          "/tmp/terraform-google-consul/modules/install-consul/install-consul --version {{user `consul_version`}}",
+          "/tmp/terraform-google-consul/modules/install-dnsmasq/install-dnsmasq"
+        ],
+        "pause_before": "30s"
+      },
+      {
+        "type": "shell",
+        "inline": [
+            "sudo sh /tmp/install-node.sh"
+        ]
+      }
+    ]
+  }

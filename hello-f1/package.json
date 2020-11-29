@@ -1,0 +1,24 @@
+{
+  "name": "hello-f1",
+  "version": "1.0.0",
+  "description": "A Simple microservice to get info about F1 races and its drivers",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b-rajesh/f1-api.git"
+  },
+  "author": "Rajesh Bavan",
+  "license": "ISC",
+  "homepage": "https://github.com/b-rajesh/f1-api#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "uuid": "^3.3.2"
+  }
+}

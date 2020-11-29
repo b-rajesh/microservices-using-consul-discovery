@@ -1,0 +1,18 @@
+{
+    "service": {
+        "name": "weather-v3-svc",
+        "tags": [
+            "microservice",
+            "nodejs",
+            "v8.9.4"
+        ],
+        "port": 3000,
+        "check": {
+            "id": "Weather-API",
+            "name": "API traffic on port 3000",
+            "http": "http://localhost:3000/weather/health",
+            "interval": "10s",
+            "timeout": "2s"
+        }
+    }
+}

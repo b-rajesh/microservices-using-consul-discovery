@@ -1,0 +1,25 @@
+{
+  "name": "hello-nginxlpus",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/b-rajesh/hello-nginxplus"
+  },
+  "version": "1.0.0",
+  "description": "JSON service for a backend need",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mendhak <gpslogger@mendhak.com>",
+  "license": "BSD-3-Clause",
+  "engines": {
+    "node": ">=6.3.0"
+  },
+  "dependencies": {
+    "concat-stream": "1.6.0",
+    "express": "4.16.2",
+    "jsonwebtoken": "8.1.0",
+    "morgan": "^1.10.0"
+  }
+}
